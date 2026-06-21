@@ -4,6 +4,8 @@ import com.neobank.userservice.dto.RegisterRequest;
 import com.neobank.userservice.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import com.neobank.userservice.dto.RegisterResponse;
+import com.neobank.userservice.dto.LoginRequest;
+import com.neobank.userservice.dto.LoginResponse;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,5 +23,11 @@ public class AuthController {
 
     return userService.register(request);
     }
+    @PostMapping("/login")
+    public LoginResponse login(
+        @RequestBody LoginRequest request) {
+
+    return userService.login(request);
+}
     
 }

@@ -5,15 +5,20 @@ import com.neobank.userservice.dto.RegisterResponse;
 import com.neobank.userservice.entity.User;
 import com.neobank.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    public UserService(UserRepository userRepository,
+                   PasswordEncoder passwordEncoder) {
+
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+}
 
     public RegisterResponse register(RegisterRequest request) {
 
@@ -24,7 +29,11 @@ public class UserService {
         User user = User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
-                .password(request.getPassword())
+                .password(
+                   passwordEncoder.encode(
+                     request.getPassword()
+                   )
+                 )
                 .phone(request.getPhone())
                 .build();
 

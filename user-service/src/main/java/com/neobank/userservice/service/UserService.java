@@ -1,6 +1,7 @@
 package com.neobank.userservice.service;
 
 import com.neobank.userservice.dto.RegisterRequest;
+import com.neobank.userservice.dto.RegisterResponse;
 import com.neobank.userservice.entity.User;
 import com.neobank.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -16,8 +17,8 @@ public class UserService {
 
     public RegisterResponse register(RegisterRequest request) {
 
-        if(userRepository.findByEmail(request.getEmail()).isPresent()) {
-            return "Email already exists";
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Email already exists");
         }
 
         User user = User.builder()
@@ -27,8 +28,13 @@ public class UserService {
                 .phone(request.getPhone())
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-        return "User Registered Successfully";
+        return RegisterResponse.builder()
+                .id(savedUser.getId())
+                .name(savedUser.getName())
+                .email(savedUser.getEmail())
+                .message("User Registered Successfully")
+                .build();
     }
 }

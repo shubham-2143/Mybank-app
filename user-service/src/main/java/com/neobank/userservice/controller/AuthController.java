@@ -3,6 +3,7 @@ package com.neobank.userservice.controller;
 import com.neobank.userservice.dto.RegisterRequest;
 import com.neobank.userservice.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import com.neobank.userservice.dto.RegisterResponse;
 
 @RestController
 @RequestMapping("/api/auth")

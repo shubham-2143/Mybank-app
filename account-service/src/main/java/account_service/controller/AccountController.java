@@ -5,6 +5,7 @@ import account_service.dto.CreateAccountResponse;
 import account_service.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 import account_service.dto.AccountResponse;
+import account_service.dto.DebitCreditRequest;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -37,4 +38,24 @@ public class AccountController {
             .getBalance()
             .toString();
     }
+    @PutMapping("/debit")
+    public String debit(@RequestBody DebitCreditRequest request) {
+
+    service.debit(request);
+
+    return "Amount Debited Successfully";
+}
+    @PutMapping("/credit")
+   public String credit(@RequestBody DebitCreditRequest request) {
+
+    service.credit(request);
+
+    return "Amount Credited Successfully";
+}
+    @GetMapping("/exists/{accountNumber}")
+    public boolean exists(
+        @PathVariable String accountNumber) {
+
+    return service.accountExists(accountNumber);
+}
 }

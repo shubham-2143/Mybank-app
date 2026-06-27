@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import account_service.dto.AccountResponse;
 import java.time.LocalDateTime;
 import account_service.dto.DebitCreditRequest;
+import account_service.exception.AccountNotFoundException;
 
 @Service
 public class AccountService {
@@ -46,8 +47,7 @@ public class AccountService {
     Account account = repository
             .findByAccountNumber(accountNumber)
             .orElseThrow(() ->
-                    new RuntimeException("Account not found"));
-
+                 new AccountNotFoundException("Account not found"));
     return AccountResponse.builder()
             .accountNumber(account.getAccountNumber())
             .customerEmail(account.getCustomerEmail())
@@ -61,8 +61,7 @@ public class AccountService {
     Account account = repository.findByAccountNumber(
             request.getAccountNumber())
             .orElseThrow(() ->
-                    new RuntimeException("Account not found"));
-
+                  new AccountNotFoundException("Account not found"));
     if (account.getBalance().compareTo(request.getAmount()) < 0) {
         throw new RuntimeException("Insufficient balance");
     }
@@ -78,8 +77,7 @@ public class AccountService {
     Account account = repository.findByAccountNumber(
             request.getAccountNumber())
             .orElseThrow(() ->
-                    new RuntimeException("Account not found"));
-
+                  new AccountNotFoundException("Account not found"));
     account.setBalance(
             account.getBalance().add(request.getAmount()));
 
